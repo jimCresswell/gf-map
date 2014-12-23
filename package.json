@@ -1,8 +1,8 @@
 {
-  "name": "find-toilets",
+  "name": "nearest-something",
   "version": "0.0.1",
   "private": true,
-  "description": "For the UK, given a location show the nearest public toilets.",
+  "description": "For the UK, given a location show the nearest something.",
   "main": "index.html",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
