@@ -18,12 +18,12 @@ function getData(options) {
 
     var url = options.url;
     if (options.params) {
-        url += Object.keys(options.params).reduce(function(param) {
-            return param + '=' + options.params[param] + '&';
+        url += Object.keys(options.params).reduce(function(soFar, param) {
+            return soFar + param + '=' + options.params[param] + '&';
         },'?');
     }
 
-    get(options.url, function(res) {
+    get(url, function(res) {
         if (res.error) {
             deferred.reject(res.error);
         } else {
