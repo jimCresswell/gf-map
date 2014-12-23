@@ -27,13 +27,15 @@ gulp.task('serve', function() {
 
 // The gulp-browserify package isn't great, next time just use browserify.
 gulp.task('scripts', function() {
-    gulp.watch(['*.html', paths.css, paths.js], function() {
-        gulp.src('js/main.js')
-            .pipe(browserify({
-          insertGlobals : true
-        }))
-            .pipe(gulp.dest('build/js'));
-    });
+  function  build() {
+    gulp.src('js/main.js')
+      .pipe(browserify({
+        insertGlobals : true
+      }))
+      .pipe(gulp.dest('build/js'));
+  }
+  build();
+  gulp.watch(['*.html', paths.css, paths.js], build);
 });
 
 gulp.task('default', ['scripts','serve']);

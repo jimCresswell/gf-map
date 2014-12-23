@@ -14,3 +14,25 @@ body {
   display: block;
   background-color: gainsboro;
 }
+
+#venueAttribution {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    text-align: center;
+}
+
+#venueAttribution > span {
+    line-height: 2em;
+    font-weight: 900;
+    text-shadow:
+        -1px -1px 0 #fff,
+        1px -1px 0 #fff,
+        -1px 1px 0 #fff,
+        1px 1px 0 #fff;
+}
+
+#venueAttribution a {
+    text-decoration: none;
+    color: inherit;
+}

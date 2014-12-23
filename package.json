@@ -1,8 +1,8 @@
 {
-  "name": "nearest-something",
+  "name": "gf-map",
   "version": "0.0.1",
   "private": true,
-  "description": "For the UK, given a location show the nearest something.",
+  "description": "A map of nearby venues tagged as 'gluten free' on Foursquare.",
   "main": "index.html",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

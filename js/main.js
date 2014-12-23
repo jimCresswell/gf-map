@@ -5,7 +5,11 @@
  */
 'use strict';
 
+// npm modules.
 var L = require('leaflet');
+
+// Custom modules.
+var dataService = require('./dataService');
 
 
 // Kickoff.
@@ -27,8 +31,8 @@ function go() {
       enableHighAccuracy: true
     };
     var wpid = navigator.geolocation.watchPosition(geo_success, geo_error, geo_options);
-
 }
+
 
 function setMapHeight(){
     $('#map').height($(document).height());
@@ -49,7 +53,21 @@ function geo_success(position) {
 
   var marker = L.marker([geoLat, geoLong]).addTo(map);
   marker.bindPopup("You are here!").openPopup();
+
+  dataService
+    .getData({
+      url: 'https://api.foursquare.com/v2/venues/explore',
+      params: {
+        ll: '' + geoLong + ',' + geoLong,
+        query: 'gluten free',
+
+      }
+    })
+    .then(function(data) {
+      console.log(data);
+    });
 }
+
 
 function geo_error() {
   alert("Sorry, no position available.");
