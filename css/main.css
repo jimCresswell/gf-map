@@ -48,3 +48,8 @@ body {
 .leaflet-popup {
   font-size: 1.1rem;
 }
+
+.leaflet-popup-content {
+  box-sizing: border-box;
+  max-width: 80vw;
+}
