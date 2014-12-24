@@ -36,7 +36,7 @@ function go() {
     var geo_options = {
       enableHighAccuracy: true
     };
-    navigator.geolocation.watchPosition(geo_success, geo_error, geo_options);
+    navigator.geolocation.getCurrentPosition(geo_success, geo_error, geo_options);
     var wpid = navigator.geolocation.watchPosition(geo_update, geo_error, geo_options);
 }
 
@@ -112,9 +112,6 @@ function geo_update(position) {
   var geoLat = position.coords.latitude;
   var geoLong = position.coords.longitude;
 
-  if (map) {
-    map.setView([geoLat, geoLong]);
-  }
   if (userMarker) {
     userMarker.setLatLng([geoLat, geoLong]);
   }
