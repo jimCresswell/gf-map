@@ -31,7 +31,7 @@ function go() {
     map = L.map('map');
 
     // Configure default markers.
-    L.Icon.Default.imagePath = 'node_modules/leaflet/dist/images'
+    L.Icon.Default.imagePath = '/images/vendor/leaflet'
 
     var geo_options = {
       enableHighAccuracy: true

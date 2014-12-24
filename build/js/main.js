@@ -85,12 +85,12 @@ function go() {
     map = L.map('map');
 
     // Configure default markers.
-    L.Icon.Default.imagePath = 'node_modules/leaflet/dist/images'
+    L.Icon.Default.imagePath = '/images/vendor/leaflet'
 
     var geo_options = {
       enableHighAccuracy: true
     };
-    navigator.geolocation.watchPosition(geo_success, geo_error, geo_options);
+    navigator.geolocation.getCurrentPosition(geo_success, geo_error, geo_options);
     var wpid = navigator.geolocation.watchPosition(geo_update, geo_error, geo_options);
 }
 
@@ -166,9 +166,6 @@ function geo_update(position) {
   var geoLat = position.coords.latitude;
   var geoLong = position.coords.longitude;
 
-  if (map) {
-    map.setView([geoLat, geoLong]);
-  }
   if (userMarker) {
     userMarker.setLatLng([geoLat, geoLong]);
   }
@@ -182,7 +179,7 @@ function geo_error() {
 
 
 
-}).call(this,require("1YiZ5S"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/fake_d5abd7cf.js","/")
+}).call(this,require("1YiZ5S"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/fake_4542683f.js","/")
 },{"./dataService":1,"1YiZ5S":6,"buffer":3,"leaflet":7}],3:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 /*!
