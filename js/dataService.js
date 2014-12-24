@@ -5,7 +5,7 @@
  */
 'use strict';
 
-var get = require('superagent').get;
+var agent = require('superagent');
 var defer = require('q').defer;
 
 module.exports = {
@@ -16,20 +16,23 @@ module.exports = {
 function getData(options) {
     var deferred = defer();
 
-    var url = options.url;
+    var req = agent.get(options.url);
+
     if (options.params) {
-        url += Object.keys(options.params).reduce(function(soFar, param) {
-            return soFar + param + '=' + options.params[param] + '&';
-        },'?');
+        req.query(options.params);
     }
 
-    get(url, function(res) {
-        if (res.error) {
-            deferred.reject(res.error);
-        } else {
-            deferred.resolve(res.body);
-        }
-    });
+    if (options.cors) {
+        req.withCredentials();
+    }
+
+    req.end(function(res) {
+            if (res.error) {
+                deferred.reject(res.error);
+            } else {
+                deferred.resolve(res.body);
+            }
+        });
 
     return deferred.promise;
 }

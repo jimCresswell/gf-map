@@ -7,7 +7,7 @@
  */
 'use strict';
 
-var get = require('superagent').get;
+var agent = require('superagent');
 var defer = require('q').defer;
 
 module.exports = {
@@ -18,20 +18,23 @@ module.exports = {
 function getData(options) {
     var deferred = defer();
 
-    var url = options.url;
+    var req = agent.get(options.url);
+
     if (options.params) {
-        url += Object.keys(options.params).reduce(function(soFar, param) {
-            return soFar + param + '=' + options.params[param] + '&';
-        },'?');
+        req.query(options.params);
     }
 
-    get(url, function(res) {
-        if (res.error) {
-            deferred.reject(res.error);
-        } else {
-            deferred.resolve(res.body);
-        }
-    });
+    if (options.cors) {
+        req.withCredentials();
+    }
+
+    req.end(function(res) {
+            if (res.error) {
+                deferred.reject(res.error);
+            } else {
+                deferred.resolve(res.body);
+            }
+        });
 
     return deferred.promise;
 }
@@ -61,7 +64,8 @@ $(window).resize(setMapHeight);
 
 // Shared variables.
 var map;
-
+var userMarker;
+var clientId = 'FV2WB3ZXPH5ZHHYR12XAH4WENOCXOXAD31YFJF4LDDDQJVK4';
 
 /* Functions */
 function go() {
@@ -75,7 +79,8 @@ function go() {
     var geo_options = {
       enableHighAccuracy: true
     };
-    var wpid = navigator.geolocation.watchPosition(geo_success, geo_error, geo_options);
+    navigator.geolocation.watchPosition(geo_success, geo_error, geo_options);
+    var wpid = navigator.geolocation.watchPosition(geo_update, geo_error, geo_options);
 }
 
 
@@ -91,8 +96,14 @@ function geo_success(position) {
   // 51.505, -0.09
   map.setView([geoLat, geoLong], 13);
 
-  var marker = L.marker([geoLat, geoLong]).addTo(map);
-  marker.bindPopup("You are here!").openPopup();
+  // Create the user marker
+  userMarker = L.circleMarker([geoLat, geoLong], {
+      color: 'green',
+      fillColor: '#0f3',
+      fillOpacity: 0.5,
+      weight: 4
+  }).addTo(map);
+  userMarker.bindPopup("You are here!").openPopup();
 
   // Get tiles.
   L.tileLayer('http://{s}.tiles.mapbox.com/v3/jimcresswell.kie2d4km/{z}/{x}/{y}.png', {
@@ -108,7 +119,7 @@ function geo_success(position) {
         ll: '' + geoLat + ',' + geoLong,
         radius: '10000',
         query: 'gluten free',
-        client_id: 'FV2WB3ZXPH5ZHHYR12XAH4WENOCXOXAD31YFJF4LDDDQJVK4',
+        client_id: clientId,
         client_secret: 'ZF5G3BX4T5O1HW1AWKNHLZUMVFEG1RUST2CSX2JNAVDVCMI1',
         v: '20141223'
       }
@@ -118,19 +129,38 @@ function geo_success(position) {
         console.log(data.response.warning.text);
       }
       data.response.groups[0].items.forEach(function(item) {
-        if (item.reasons) {
           item.reasons.items.forEach(function(reasonItem) {
             if ("tipsMatchReason" === reasonItem.reasonName) {
               var venLat = item.venue.location.lat;
               var venLong = item.venue.location.lng;
+              var tipText = item.tips[0].text;
               var venueMarker = L.marker([venLat, venLong]).addTo(map);
-              venueMarker.bindPopup('<p>' + item.venue.name + '</p><p>' + item.tips[0].text + '</p>');
+              var venue = item.venue;
+              var markerContent = '<p class="venue__name">';
+              markerContent +=    venue.url ? '<a href="' + venue.url + '">' + venue.name + '</a>' : venue.name;
+              markerContent +=    '</p>';
+              markerContent +=    '<p class="venue__comment">' + tipText + '</p>' +
+                                  '<p class="venue__details"><a href="https://foursquare.com/v/' + venue.id + '?ref=' + clientId + '">More Details</a></p>';
+
+              venueMarker.bindPopup(markerContent);
             }
           });
-        }
       });
     })
     .done();
+}
+
+
+function geo_update(position) {
+  var geoLat = position.coords.latitude;
+  var geoLong = position.coords.longitude;
+
+  if (map) {
+    map.setView([geoLat, geoLong]);
+  }
+  if (userMarker) {
+    userMarker.setLatLng([geoLat, geoLong]);
+  }
 }
 
 
@@ -141,7 +171,7 @@ function geo_error() {
 
 
 
-}).call(this,require("1YiZ5S"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/fake_2f2c3d7c.js","/")
+}).call(this,require("1YiZ5S"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/fake_6c2c8142.js","/")
 },{"./dataService":1,"1YiZ5S":6,"buffer":3,"leaflet":7}],3:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 /*!
